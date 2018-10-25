@@ -1,7 +1,0 @@
-INDEX VERSION 1.4+D:\Eigene Dateien\googledrive\Hochschule\Veranstaltungen\Verteilte-Systeme\Labor\Workspace\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-1357906344.index
-3601759712.index
-4114697266.index
-3537754259.index
-1872831083.index
-776937708.index
