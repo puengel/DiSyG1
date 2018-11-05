@@ -26,5 +26,17 @@
 			</p:column>
 		</p:dataTable>
 	</h:form>
+	
+	<h:form id="runwayTableForm">
+		<p:dataTable value="#{airportBean.runways}" var="runway">
+			<p:column headerText="Runway">
+        		<h:outputText value="#{runway.id}" />
+    		</p:column>
+ 
+    		<p:column headerText="in use">
+        		<h:outputText value="#{runway.inUse}" />
+    		</p:column>
+		</p:dataTable>
+	</h:form>
 </h:body>
 </html>
