@@ -15,6 +15,7 @@
 	<h:form>
 		<p:panel header="New airplane">
 			Airplane name: <p:inputText value="#{airportBean.airplane.name}" /><p/>
+			Airline      : <p:inputText value="#{airportBean.airplane.airline}" /><p/>
 			<p:commandButton value="Add airplane" action="#{airportBean.store}" update="airplaneTableForm" />
 		</p:panel>
 	</h:form>
@@ -24,6 +25,18 @@
 			<p:column headerText="Airplanes">
 				<h:outputText value="#{airplane.name}" />
 			</p:column>
+			<p:column>
+				<h:outputText value="#{airplane.airline}" />
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	<p/>
+	<h:form id="runwayTableForm">
+		<p:dataTable value="#{airportBean.airplanes}" var="airplane">
+			<p:column headerText="Runways">
+				<h:outputText value="#{airplane.name}" />
+			</p:column>
+			
 		</p:dataTable>
 	</h:form>
 </h:body>

@@ -15,6 +15,8 @@ public class Airplane {
 	private int id;
 	
 	private String name;
+	private String airline;
+	private String time;
 
 	public int getId() {
 		return id;
@@ -31,4 +33,11 @@ public class Airplane {
 	public void setName(String name) {
 		this.name = name;
 	} 
+	
+	public String getAirline() {
+		return airline;
+	}
+	public void setAirline(String airline) {
+		this.airline = airline;
+	}
 }
