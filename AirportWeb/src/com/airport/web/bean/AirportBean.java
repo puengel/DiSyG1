@@ -3,6 +3,7 @@ package com.airport.web.bean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -39,10 +40,11 @@ public class AirportBean implements Serializable {
 		runway2 = new Runway();
 		runway3 = new Runway();
 		runway4 = new Runway();
-		runway1.setId(1);
-		runway2.setId(2);
-		runway3.setId(3);
-		runway4.setId(4);
+		airportEJB.store(runway1);
+		airportEJB.store(runway2);
+		airportEJB.store(runway3);
+		airportEJB.store(runway4);
+		
 		
 		System.out.println("runways initialized");
 	}
@@ -83,5 +85,20 @@ public class AirportBean implements Serializable {
 	public void store() {
 		airportEJB.store(airplane);
 		airplane = new Airplane();
+	}
+	
+	public void land() {
+		//Das allein Funktioniert!
+		airportEJB.update(runway1);
+
+		//Sobald der Timer dabei ist funktioniert es nicht mehr.. (Thread.sleep hab ich auch versucht)
+//		airportEJB.update(runway1);
+//		try {
+//			TimeUnit.SECONDS.sleep(1);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		airportEJB.update(runway1);
 	}
 }

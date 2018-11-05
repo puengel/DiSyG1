@@ -28,6 +28,20 @@ public class AirportEJB {
 		entityManager.persist(airplane);
 	}
 	
+	public void store(Runway runway) {
+		entityManager.persist(runway);
+	}
+	
+	public void update(Runway runway) {
+		if(runway.getInUse() == true) {
+			runway.setInUse(false);
+		}else if(runway.getInUse() == false) {
+			runway.setInUse(true);
+		}
+		
+		entityManager.merge(runway);
+	}
+	
 	public List<Runway> getRunways() {
 		Query query = entityManager.createNamedQuery("runway.findAll");
 		

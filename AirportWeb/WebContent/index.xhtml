@@ -23,6 +23,7 @@
 		<p:dataTable value="#{airportBean.airplanes}" var="airplane">
 			<p:column headerText="Airplanes">
 				<h:outputText value="#{airplane.name}" />
+				<p:commandButton value="land airplane" action="#{airportBean.land}" update="runwayTableForm" />
 			</p:column>
 		</p:dataTable>
 	</h:form>
