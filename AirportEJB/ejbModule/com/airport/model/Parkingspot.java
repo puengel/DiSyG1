@@ -6,15 +6,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 
-@NamedQuery(name="runway.findAll", query="select r from Runway r order by r.id")
+
+@NamedQuery(name="parkingspot.findAll", query="select a from Parkingspot a order by a.id")
 
 @Entity
-public class Runway {
+public class Parkingspot {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	private boolean inUse;
+	private String airplaneName;
 
 	public int getId() {
 		return id;
@@ -23,12 +25,12 @@ public class Runway {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public boolean getInUse() {
-		return inUse;
+
+	public String getAirplaneName() {
+		return airplaneName;
 	}
-	
-	public void setInUse(boolean inUse) {
-		this.inUse = inUse;
-	}
+
+	public void setAirplaneName(String name) {
+		this.airplaneName = name;
+	} 
 }

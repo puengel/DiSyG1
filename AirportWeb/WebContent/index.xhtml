@@ -20,24 +20,42 @@
 	</h:form>
 	<p/>
 	<h:form id="airplaneTableForm">
-		<p:dataTable value="#{airportBean.airplanes}" var="airplane">
-			<p:column headerText="Airplanes">
-				<h:outputText value="#{airplane.name}" />
-				<p:commandButton value="land airplane" action="#{airportBean.land}" update="runwayTableForm" />
-			</p:column>
-		</p:dataTable>
+			<p:dataTable value="#{airportBean.airplanes}" var="airplane">
+				<p:column headerText="Airplanes">
+					<h:outputText value="#{airplane.name}" />
+					<p:commandButton value="land airplane start" action="#{airportBean.initiateLanding()}" update="runwayTableForm"/>
+					<p:commandButton value="land airplane end" action="#{airportBean.endLanding()}" update="runwayTableForm" />
+					<p:commandButton value="park Airplane" action="#{airportBean.parkAirplane(airplane.name)}" update="parkingSpotTableForm" />
+				</p:column>
+			</p:dataTable>
 	</h:form>
-	
+	<p/>
 	<h:form id="runwayTableForm">
-		<p:dataTable value="#{airportBean.runways}" var="runway">
-			<p:column headerText="Runway">
-        		<h:outputText value="#{runway.id}" />
-    		</p:column>
+		<p:panel header="Runways">
+			<p:dataTable value="#{airportBean.runways}" var="runway">
+				<p:column headerText="Runway">
+        			<h:outputText value="#{runway.id}" />
+    			</p:column>
+ 	
+    			<p:column headerText="in use">
+        			<h:outputText value="#{runway.inUse}" />
+    			</p:column>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+	<p/>
+	<h:form id="parkingSpotTableForm">
+		<p:panel header="Parkingspots">
+			<p:dataTable value="#{airportBean.parkingspots}" var="parkingspot">
+				<p:column headerText="Parkingspot">
+        			<h:outputText value="#{parkingspot.id}" />
+    			</p:column>
  
-    		<p:column headerText="in use">
-        		<h:outputText value="#{runway.inUse}" />
-    		</p:column>
+    			<p:column headerText="Airplane">
+        			<h:outputText value="#{parkingspot.airplaneName}" />
+    			</p:column>
 		</p:dataTable>
+		</p:panel>
 	</h:form>
 </h:body>
 </html>

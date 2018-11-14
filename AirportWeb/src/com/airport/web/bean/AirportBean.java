@@ -1,9 +1,10 @@
 package com.airport.web.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -11,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import com.airport.model.Airplane;
+import com.airport.model.Parkingspot;
 import com.airport.model.Runway;
 import com.airport.session.AirportEJB;
 
@@ -24,10 +26,9 @@ public class AirportBean implements Serializable {
 	
 	private Airplane airplane;
 	
-	private Runway runway1;
-	private Runway runway2;
-	private Runway runway3;
-	private Runway runway4;
+	private List<Runway> runwayList = new ArrayList<Runway>() ;
+
+	private List<Parkingspot> parkingspotList = new ArrayList<Parkingspot>() ;
 	
 	public AirportBean() {
 		System.out.println("AIRPORT: " + UUID.randomUUID());
@@ -36,17 +37,17 @@ public class AirportBean implements Serializable {
 	@PostConstruct
 	private void init() {
 		airplane = new Airplane();
-		runway1 = new Runway();
-		runway2 = new Runway();
-		runway3 = new Runway();
-		runway4 = new Runway();
-		airportEJB.store(runway1);
-		airportEJB.store(runway2);
-		airportEJB.store(runway3);
-		airportEJB.store(runway4);
+		//adding 4 runways
+		for(int i = 0; i < 4 ;i++) {
+			runwayList.add(new Runway());
+			airportEJB.store(runwayList.get(i)); 
+		}
 		
-		
-		System.out.println("runways initialized");
+		for(int i = 0; i < 8 ;i++) {
+			parkingspotList.add(new Parkingspot());
+			airportEJB.store(parkingspotList.get(i)); 
+		}
+			
 	}
 	
 	public List<Airplane> getAirplanes() {
@@ -57,29 +58,20 @@ public class AirportBean implements Serializable {
 		return airportEJB.getRunways();
 	}
 	
+	public List<Parkingspot> getParkingspots() {
+		return airportEJB.getParkingspots();
+	}
+	
 	public Airplane getAirplane() {
 		return airplane;
 	}
 	
 	public Runway getRunway(int id) {
-		switch(id) {
-		case 1: 
-			return runway1;
-			
-		case 2: 
-			return runway2;
-			
-		case 3: 
-			return runway3;
-			
-		case 4: 
-			return runway4;
-			
-		default: 
-			System.out.println("This id does not exist");
-			return null;
-		}
-		
+		return runwayList.get(id);
+	}
+	
+	public Parkingspot getParkingspor(int id) {
+		return parkingspotList.get(id);
 	}
 	
 	public void store() {
@@ -87,18 +79,39 @@ public class AirportBean implements Serializable {
 		airplane = new Airplane();
 	}
 	
-	public void land() {
-		//Das allein Funktioniert!
-		airportEJB.update(runway1);
-
-		//Sobald der Timer dabei ist funktioniert es nicht mehr.. (Thread.sleep hab ich auch versucht)
-//		airportEJB.update(runway1);
-//		try {
-//			TimeUnit.SECONDS.sleep(1);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		airportEJB.update(runway1);
+	public void initiateLanding() {
+		Iterator<Runway> runwayIterator = runwayList.iterator();
+		
+		while(runwayIterator.hasNext()) {
+			Runway r = runwayIterator.next();
+			if(r.getInUse() == false) {
+				airportEJB.update(r);
+				break;
+			}
+		}
+	}
+	
+	public void endLanding() {
+		Iterator<Runway> runwayIterator = runwayList.iterator();
+		
+		while(runwayIterator.hasNext()) {
+			Runway r = runwayIterator.next();
+			if(r.getInUse() == true) {
+				airportEJB.update(r);
+			}
+		}
+	}
+	
+	public void parkAirplane(String airplaneName) {
+		Iterator<Parkingspot> parkingspotIterator = parkingspotList.iterator();
+		
+		while(parkingspotIterator.hasNext()) {
+			Parkingspot p = parkingspotIterator.next();
+			if(p.getAirplaneName() == null ) {
+				airportEJB.park(p, airplaneName);
+				break;
+			}
+		}
+		
 	}
 }

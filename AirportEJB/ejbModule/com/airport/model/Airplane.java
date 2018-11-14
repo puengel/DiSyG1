@@ -2,16 +2,16 @@ package com.airport.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-
 @NamedQuery(name="airplane.findAll", query="select a from Airplane a order by a.name")
 
 @Entity
 public class Airplane {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	private String name;
