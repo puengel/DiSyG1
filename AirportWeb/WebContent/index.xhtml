@@ -24,7 +24,7 @@
 				<p:column headerText="Airplanes">
 					<h:outputText value="#{airplane.name}" />
 					<p:commandButton value="land airplane start" action="#{airportBean.initiateLanding()}" update="runwayTableForm"/>
-					<p:commandButton value="land airplane end" action="#{airportBean.endLanding()}" update="runwayTableForm" />
+					<p:commandButton value="land airplane end" action="#{airportBean.endLanding(airplane.id)}" update="runwayTableForm" />
 					<p:commandButton value="park Airplane" action="#{airportBean.parkAirplane(airplane.name)}" update="parkingSpotTableForm" />
 				</p:column>
 			</p:dataTable>

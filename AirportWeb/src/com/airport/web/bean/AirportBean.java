@@ -1,7 +1,6 @@
 package com.airport.web.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -26,30 +25,31 @@ public class AirportBean implements Serializable {
 	
 	private Airplane airplane;
 	
-	private List<Runway> runwayList = new ArrayList<Runway>() ;
-
-	private List<Parkingspot> parkingspotList = new ArrayList<Parkingspot>() ;
-	
 	public AirportBean() {
 		System.out.println("AIRPORT: " + UUID.randomUUID());
 	}
 	
 	@PostConstruct
 	private void init() {
-		airplane = new Airplane();
-		//adding 4 runways
-		for(int i = 0; i < 4 ;i++) {
-			runwayList.add(new Runway());
-			airportEJB.store(runwayList.get(i)); 
-		}
-		
-		for(int i = 0; i < 8 ;i++) {
-			parkingspotList.add(new Parkingspot());
-			airportEJB.store(parkingspotList.get(i)); 
-		}
-			
+		airplane = new Airplane();		
+		initRunways(4);
+		initParkingspots(8);			
 	}
 	
+	public void initParkingspots(int p) {
+		for(int i = 0; i < p ;i++) {
+			airportEJB.store(new Parkingspot()); 
+		}
+		
+	}
+
+	public void initRunways(int r) {
+		for(int i = 0; i < 4 ;i++) {
+			airportEJB.store(new Runway()); 
+		}
+		
+	}
+
 	public List<Airplane> getAirplanes() {
 		return airportEJB.getAirplanes();
 	}
@@ -67,11 +67,11 @@ public class AirportBean implements Serializable {
 	}
 	
 	public Runway getRunway(int id) {
-		return runwayList.get(id);
+		return airportEJB.getRunways().get(id);
 	}
 	
 	public Parkingspot getParkingspor(int id) {
-		return parkingspotList.get(id);
+		return airportEJB.getParkingspots().get(id);
 	}
 	
 	public void store() {
@@ -80,19 +80,20 @@ public class AirportBean implements Serializable {
 	}
 	
 	public void initiateLanding() {
-		Iterator<Runway> runwayIterator = runwayList.iterator();
+		Iterator<Runway> runwayIterator = airportEJB.getRunways().iterator();
 		
 		while(runwayIterator.hasNext()) {
 			Runway r = runwayIterator.next();
 			if(r.getInUse() == false) {
 				airportEJB.update(r);
-				break;
+				return;
 			}
 		}
+		//TODO: throw error that there is no runway left to use
 	}
 	
-	public void endLanding() {
-		Iterator<Runway> runwayIterator = runwayList.iterator();
+	public void endLanding(int id) {
+		Iterator<Runway> runwayIterator = airportEJB.getRunways().iterator();
 		
 		while(runwayIterator.hasNext()) {
 			Runway r = runwayIterator.next();
@@ -103,7 +104,7 @@ public class AirportBean implements Serializable {
 	}
 	
 	public void parkAirplane(String airplaneName) {
-		Iterator<Parkingspot> parkingspotIterator = parkingspotList.iterator();
+		Iterator<Parkingspot> parkingspotIterator = airportEJB.getParkingspots().iterator();
 		
 		while(parkingspotIterator.hasNext()) {
 			Parkingspot p = parkingspotIterator.next();
