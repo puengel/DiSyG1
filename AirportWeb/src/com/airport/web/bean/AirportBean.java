@@ -42,5 +42,6 @@ public class AirportBean implements Serializable {
 	public void store() {
 		airportEJB.store(airplane);
 		airplane = new Airplane();
+		//comment
 	}
 }
