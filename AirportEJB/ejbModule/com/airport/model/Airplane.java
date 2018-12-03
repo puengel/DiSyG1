@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-@NamedQuery(name="airplane.findAll", query="select a from Airplane a order by a.name")
+@NamedQuery(name="airplane.findAll", query="select a from Airplane a order by a.identifyer")
 
 @Entity
 public class Airplane {
@@ -14,7 +14,8 @@ public class Airplane {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	private String name;
+	private String identifyer;
+	private String airline;
 
 	public int getId() {
 		return id;
@@ -24,11 +25,19 @@ public class Airplane {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getIdentifyer() {
+		return identifyer;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setIdentifyer(String identifyer) {
+		this.identifyer = identifyer;
+	} 
+	
+	public String getAirline() {
+		return airline;
+	}
+
+	public void setAirline(String airline) {
+		this.airline = airline;
 	} 
 }

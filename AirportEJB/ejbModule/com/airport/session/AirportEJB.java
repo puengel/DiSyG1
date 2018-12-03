@@ -1,5 +1,6 @@
 package com.airport.session;
 
+
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -65,8 +66,8 @@ public class AirportEJB {
 		entityManager.merge(runway);
 	}
 
-	public void park(Parkingspot p, String airplaneName) {
-		p.setAirplaneName(airplaneName);
+	public void park(Parkingspot p, String identifyer) {
+		p.setAirplaneIdentifyer(identifyer);
 		entityManager.merge(p);
 		
 	}

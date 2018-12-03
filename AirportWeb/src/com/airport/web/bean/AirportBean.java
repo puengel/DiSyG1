@@ -70,7 +70,7 @@ public class AirportBean implements Serializable {
 		return airportEJB.getRunways().get(id);
 	}
 	
-	public Parkingspot getParkingspor(int id) {
+	public Parkingspot getParkingspot(int id) {
 		return airportEJB.getParkingspots().get(id);
 	}
 	
@@ -108,11 +108,10 @@ public class AirportBean implements Serializable {
 		
 		while(parkingspotIterator.hasNext()) {
 			Parkingspot p = parkingspotIterator.next();
-			if(p.getAirplaneName() == null ) {
+			if(p.getAirplaneIdentifyer() == null ) {
 				airportEJB.park(p, airplaneName);
 				break;
 			}
 		}
-		
 	}
 }
