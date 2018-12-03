@@ -81,26 +81,39 @@ public class AirportBean implements Serializable {
 		airplane = new Airplane();
 	}
 	
-	public void initiateLanding() {
+	public void initiateLanding(Airplane airplane) {
 		Iterator<Runway> runwayIterator = airportEJB.getRunways().iterator();
+		boolean alreadyLanded = false;
 		
-		while(runwayIterator.hasNext()) {
+		while(runwayIterator.hasNext() && !alreadyLanded) {
 			Runway r = runwayIterator.next();
-			if(r.getInUse() == false) {
-				airportEJB.update(r);
-				return;
+			
+			if(r.getPlaneId() == airplane.getId()) {
+				alreadyLanded = true;
 			}
 		}
-		//TODO: throw error that there is no runway left to use
+		
+		runwayIterator = airportEJB.getRunways().iterator();
+		
+		if(!alreadyLanded) {
+			while(runwayIterator.hasNext()) {
+				Runway r = runwayIterator.next();
+				if(r.getInUse() == false) {
+					airportEJB.update(r, true, airplane.getId());
+					return;
+				}
+			}
+		}
 	}
 	
-	public void endLanding(int id) {
+	public void endLanding(Airplane airplane) {
 		Iterator<Runway> runwayIterator = airportEJB.getRunways().iterator();
 		
 		while(runwayIterator.hasNext()) {
 			Runway r = runwayIterator.next();
-			if(r.getInUse() == true) {
-				airportEJB.update(r);
+			if(r.getPlaneId() == airplane.getId()) {
+				airportEJB.update(r, false, airplane.getId());
+				return;
 			}
 		}
 	}

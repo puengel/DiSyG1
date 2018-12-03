@@ -56,12 +56,15 @@ public class AirportEJB {
 		return parkingspots;
 	}
 	
-	public void update(Runway runway) {
-		if(runway.getInUse() == true) {
-			runway.setInUse(false);
-		}else if(runway.getInUse() == false) {
-			runway.setInUse(true);
-		}
+	public void update(Runway runway, boolean change, int planeID) {
+//		if(runway.getInUse() == true) {
+//			runway.setInUse(false);
+//		}else if(runway.getInUse() == false) {
+//			runway.setInUse(true);
+//		}
+		
+		runway.setInUse(change);
+		runway.setPlaneId(planeID);
 		
 		entityManager.merge(runway);
 	}
