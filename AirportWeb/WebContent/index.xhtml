@@ -55,7 +55,10 @@
     			</p:column>
  
     			<p:column headerText="Airplane">
-        			<h:outputText value="#{parkingspot.airplaneIdentifyer} #{parkingspot.arrivalTime}" />
+        			<h:outputText value="#{parkingspot.airplaneIdentifyer}" />
+    			</p:column>
+    			<p:column headerText="Arrival Time">
+        			<h:outputText value="#{parkingspot.arrivalTime}" />
     			</p:column>
 		</p:dataTable>
 		</p:panel>

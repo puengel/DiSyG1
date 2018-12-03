@@ -1,6 +1,8 @@
 package com.airport.web.bean;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -105,11 +107,12 @@ public class AirportBean implements Serializable {
 	
 	public void parkAirplane(String airplaneName) {
 		Iterator<Parkingspot> parkingspotIterator = airportEJB.getParkingspots().iterator();
+		String timeStamp = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss").format(Calendar.getInstance().getTime());
 		
 		while(parkingspotIterator.hasNext()) {
 			Parkingspot p = parkingspotIterator.next();
 			if(p.getAirplaneIdentifyer() == null ) {
-				airportEJB.park(p, airplaneName);
+				airportEJB.park(p, airplaneName, timeStamp);
 				break;
 			}
 		}

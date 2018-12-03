@@ -66,8 +66,9 @@ public class AirportEJB {
 		entityManager.merge(runway);
 	}
 
-	public void park(Parkingspot p, String identifyer) {
+	public void park(Parkingspot p, String identifyer, String timeStamp) {
 		p.setAirplaneIdentifyer(identifyer);
+		p.setArrivalTime(timeStamp);
 		entityManager.merge(p);
 		
 	}
