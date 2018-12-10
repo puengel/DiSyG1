@@ -56,24 +56,19 @@ public class AirportEJB {
 		return parkingspots;
 	}
 	
-	public void update(Runway runway, boolean change, int planeID) {
-//		if(runway.getInUse() == true) {
-//			runway.setInUse(false);
-//		}else if(runway.getInUse() == false) {
-//			runway.setInUse(true);
-//		}
+	public void update(Runway runway, boolean change, int airplaneID) {
 		
-		runway.setInUse(change);
-		runway.setPlaneId(planeID);
+		runway.setInUse(change, airplaneID);
 		
 		entityManager.merge(runway);
 	}
 
-	public void park(Parkingspot p, String identifyer, String timeStamp) {
-		p.setAirplaneIdentifyer(identifyer);
+	public void park(Parkingspot p, Airplane airplane, String timeStamp) {
+		p.setAirplaneIdentifyer(airplane.getIdentifyer());
+		p.setAirline(airplane.getAirline());
+		p.setAirplaneId(airplane.getId());
 		p.setArrivalTime(timeStamp);
 		entityManager.merge(p);
-		
 	}
 	
 	

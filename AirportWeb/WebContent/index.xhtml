@@ -23,14 +23,13 @@
 	</h:form>
 	<p/>
 	<h:form id="airplaneTableForm">
-			<p:dataTable value="#{airportBean.airplanes}" var="airplane">
-				<p:column headerText="Airplanes">
-					<h:outputText value="Id: #{airplane.identifyer} || Airline: #{airplane.airline}"/>
-					<p:commandButton value="land airplane start" action="#{airportBean.initiateLanding(airplane)}" update="runwayTableForm" style="margin-left: 10pt;"/>
-					<p:commandButton value="land airplane end" action="#{airportBean.endLanding(airplane)}" update="runwayTableForm" style="margin-left: 10pt;"/>
-					<p:commandButton value="park Airplane" action="#{airportBean.parkAirplane(airplane.identifyer)}" update="parkingSpotTableForm" style="margin-left: 10pt;"/>
-				</p:column>
-			</p:dataTable>
+		<p:dataTable value="#{airportBean.airplanes}" var="airplane">
+			<p:column headerText="Airplanes">
+				<h:outputText value="Id: #{airplane.identifyer} || Airline: #{airplane.airline}"/>
+				<p:commandButton value="land airplane start" action="#{airportBean.initiateLanding(airplane)}" update="runwayTableForm" style="margin-left: 10pt;"/>
+				<p:commandButton value="land airplane end" action="#{airportBean.endLanding(airplane)}" update="runwayTableForm parkingSpotTableForm" style="margin-left: 10pt;"/>
+			</p:column>
+		</p:dataTable>
 	</h:form>
 	<p/>
 	<h:form id="runwayTableForm">

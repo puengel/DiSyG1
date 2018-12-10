@@ -15,7 +15,8 @@ public class Runway {
 	private int id;
 	
 	private boolean inUse;
-	private int planeID;
+	
+	private int airplaneID;
 
 	public int getId() {
 		return id;
@@ -29,15 +30,20 @@ public class Runway {
 		return inUse;
 	}
 	
-	public void setInUse(boolean inUse) {
+	public void setInUse(boolean inUse, int airplaneID) {
 		this.inUse = inUse;
+		if (inUse == true){
+			this.airplaneID = airplaneID;
+		} else {
+			this.airplaneID = -1;		
+		}
 	}
 	
 	public int getPlaneId() {
-		return planeID;
+		return airplaneID;
 	}
 
-	public void setPlaneId(int planeID) {
-		this.planeID = planeID;
+	public void setAirplaneId(int airplaneID) {
+		this.airplaneID = airplaneID;
 	}
 }

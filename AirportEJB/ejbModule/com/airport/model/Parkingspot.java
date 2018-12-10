@@ -15,8 +15,11 @@ public class Parkingspot {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	private String airline;
 	private String airplaneIdentifyer;
 	private String arrivalTime;
+	
+	private int airplaneID;
 	
 
 	public int getId() {
@@ -26,6 +29,14 @@ public class Parkingspot {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public int getAirplaneId() {
+		return airplaneID;
+	}
+
+	public void setAirplaneId(int airplaneID) {
+		this.airplaneID = airplaneID;
+	} 
 
 	public String getAirplaneIdentifyer() {
 		return airplaneIdentifyer;
@@ -42,4 +53,12 @@ public class Parkingspot {
 	public void setArrivalTime(String arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	} 
+	
+	public String getAirline() {
+		return airline;
+	}
+
+	public void setAirline(String airline) {
+		this.airline = airline;
+	}
 }

@@ -16,6 +16,7 @@ import com.airport.model.Airplane;
 import com.airport.model.Parkingspot;
 import com.airport.model.Runway;
 import com.airport.session.AirportEJB;
+import com.sun.media.sound.AiffFileReader;
 
 @ManagedBean(name="airportBean")
 @SessionScoped
@@ -77,17 +78,44 @@ public class AirportBean implements Serializable {
 	}
 	
 	public void store() {
-		airportEJB.store(airplane);
-		airplane = new Airplane();
+//		airportEJB.store(airplane);
+//		airplane = new Airplane();
+		Iterator<Airplane> airplaneIterator = airportEJB.getAirplanes().iterator();
+		boolean alreadyStored = false;
+				
+		// Search if the plane is already landing
+		while(airplaneIterator.hasNext() && !alreadyStored) {
+			Airplane a = airplaneIterator.next();
+
+			if(a.getIdentifyer().equals(airplane.getIdentifyer())
+				&& a.getAirline().equals(airplane.getAirline())) {
+				alreadyStored = true;
+			}
+		}
+		
+		if (!alreadyStored){
+			airportEJB.store(airplane);
+			airplane = new Airplane();
+		}
 	}
 	
 	public void initiateLanding(Airplane airplane) {
 		Iterator<Runway> runwayIterator = airportEJB.getRunways().iterator();
+		Iterator<Parkingspot> parkingspotIterator = airportEJB.getParkingspots().iterator();
 		boolean alreadyLanded = false;
+		boolean alreadyParked = false;
 		
-		while(runwayIterator.hasNext() && !alreadyLanded) {
+		// Search if the plane is already landing
+		while(parkingspotIterator.hasNext() && !alreadyParked) {
+			Parkingspot p = parkingspotIterator.next();
+			if(p.getAirplaneId() == airplane.getId()) {
+				alreadyParked = true;
+			}
+		}
+		
+		// Search if the plane is already landing
+		while(runwayIterator.hasNext() && !alreadyLanded && !alreadyParked) {
 			Runway r = runwayIterator.next();
-			
 			if(r.getPlaneId() == airplane.getId()) {
 				alreadyLanded = true;
 			}
@@ -95,7 +123,7 @@ public class AirportBean implements Serializable {
 		
 		runwayIterator = airportEJB.getRunways().iterator();
 		
-		if(!alreadyLanded) {
+		if(!alreadyLanded && !alreadyParked) {
 			while(runwayIterator.hasNext()) {
 				Runway r = runwayIterator.next();
 				if(r.getInUse() == false) {
@@ -108,26 +136,45 @@ public class AirportBean implements Serializable {
 	
 	public void endLanding(Airplane airplane) {
 		Iterator<Runway> runwayIterator = airportEJB.getRunways().iterator();
+		boolean landing = false;
 		
 		while(runwayIterator.hasNext()) {
 			Runway r = runwayIterator.next();
 			if(r.getPlaneId() == airplane.getId()) {
 				airportEJB.update(r, false, airplane.getId());
-				return;
+				landing = true;
 			}
+		}
+		
+		if(landing) {
+			parkAirplane(airplane);
 		}
 	}
 	
-	public void parkAirplane(String airplaneName) {
+	public void parkAirplane(Airplane airplane) {
 		Iterator<Parkingspot> parkingspotIterator = airportEJB.getParkingspots().iterator();
 		String timeStamp = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss").format(Calendar.getInstance().getTime());
+		boolean alreadyParked = false;
 		
-		while(parkingspotIterator.hasNext()) {
+		// Search if the plane is already landing
+		while(parkingspotIterator.hasNext() && !alreadyParked) {
 			Parkingspot p = parkingspotIterator.next();
-			if(p.getAirplaneIdentifyer() == null ) {
-				airportEJB.park(p, airplaneName, timeStamp);
-				break;
+			if(p.getAirplaneId() == airplane.getId()) {	
+				alreadyParked = true;
 			}
 		}
+		
+		parkingspotIterator = airportEJB.getParkingspots().iterator();
+		
+		if(!alreadyParked) {
+			while(parkingspotIterator.hasNext()) {
+				Parkingspot p = parkingspotIterator.next();
+				if(p.getAirplaneIdentifyer() == null ) {
+					airportEJB.park(p, airplane, timeStamp);
+					break;
+				}
+			}
+		}
+		
 	}
 }
