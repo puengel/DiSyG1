@@ -79,13 +79,13 @@ public class AirportBean implements Serializable {
 		airplane = new Airplane();
 	}
 	
-	public void initiateLanding() {
+	public void initiateLanding(String airplaneName) {
 		Iterator<Runway> runwayIterator = airportEJB.getRunways().iterator();
 		
 		while(runwayIterator.hasNext()) {
 			Runway r = runwayIterator.next();
 			if(r.getInUse() == false) {
-				airportEJB.update(r);
+				airportEJB.update(r, airplaneName);
 				return;
 			}
 		}
@@ -98,18 +98,29 @@ public class AirportBean implements Serializable {
 		while(runwayIterator.hasNext()) {
 			Runway r = runwayIterator.next();
 			if(r.getInUse() == true) {
-				airportEJB.update(r);
+				airportEJB.update(r, "");
 			}
 		}
 	}
 	
 	public void parkAirplane(String airplaneName) {
 		Iterator<Parkingspot> parkingspotIterator = airportEJB.getParkingspots().iterator();
-		
 		while(parkingspotIterator.hasNext()) {
 			Parkingspot p = parkingspotIterator.next();
 			if(p.getAirplaneIdentifyer() == null ) {
 				airportEJB.park(p, airplaneName);
+				break;
+			}
+		}
+	}
+	
+	public void parkAirplane(Runway runway) {
+		Iterator<Parkingspot> parkingspotIterator = airportEJB.getParkingspots().iterator();
+		System.out.println("parking!!");
+		while(parkingspotIterator.hasNext()) {
+			Parkingspot p = parkingspotIterator.next();
+			if(p.getAirplaneIdentifyer() == null ) {
+				airportEJB.park(p, runway);
 				break;
 			}
 		}
