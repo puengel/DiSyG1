@@ -1,7 +1,6 @@
 package com.airport.session;
 
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -57,12 +56,13 @@ public class AirportEJB {
 		return parkingspots;
 	}
 	
-	public void update(Runway runway, String identifyer) {
+	public void update(Runway runway, String airplaneName) {
 		if(runway.getInUse() == true) {
 			runway.setInUse(false);
-		}else if(runway.getInUse() == false) {
+			runway.setAirplane("");
+		}else if(runway.getInUse() == false && !airplaneName.equals("")) {
 			runway.setInUse(true);
-			runway.setPlaneId(identifyer);
+			runway.setAirplane(airplaneName);
 		}
 		
 		entityManager.merge(runway);
@@ -71,13 +71,14 @@ public class AirportEJB {
 	public void park(Parkingspot p, String identifyer) {
 		p.setAirplaneIdentifyer(identifyer);
 		entityManager.merge(p);
-		List<Runway> runways = getRunways();
-		for (int i = 0; i < runways.size(); i++) {
-			if (runways.get(i).getPlaneIdentifyer() == identifyer) {
-				update(runways.get(i), "");
-				break;
-			}
-		}
+		
+	}
+	
+	public void park(Parkingspot p, Runway r) {
+		p.setAirplaneIdentifyer(r.getAirplane());
+		entityManager.merge(p);
+		update(r, "");
+		
 	}
 	
 	

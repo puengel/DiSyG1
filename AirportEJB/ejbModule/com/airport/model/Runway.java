@@ -15,7 +15,7 @@ public class Runway {
 	private int id;
 	
 	private boolean inUse;
-	private String planeIdentifyer = "";
+	private String airplane;
 
 	public int getId() {
 		return id;
@@ -33,11 +33,11 @@ public class Runway {
 		this.inUse = inUse;
 	}
 	
-	public String getPlaneIdentifyer() {
-		return planeIdentifyer;
+	public String getAirplane() {
+		return this.airplane;
 	}
 	
-	public void setPlaneId(String planeIdentifyer) {
-		this.planeIdentifyer = planeIdentifyer;
+	public void setAirplane(String airplane) {
+		this.airplane = airplane;
 	}
 }

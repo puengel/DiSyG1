@@ -26,9 +26,9 @@
 			<p:dataTable value="#{airportBean.airplanes}" var="airplane">
 				<p:column headerText="Airplanes">
 					<h:outputText value="Id: #{airplane.identifyer} || Airline: #{airplane.airline}"/>
-					<p:commandButton value="land airplane start" action="#{airportBean.initiateLanding(airplane.identifyer)}" update="runwayTableForm" style="margin-left: 10pt;"/>
+					<p:commandButton value="land airplane start" action="#{airportBean.initiateLanding()}" update="runwayTableForm" style="margin-left: 10pt;"/>
 					<p:commandButton value="land airplane end" action="#{airportBean.endLanding(airplane.id)}" update="runwayTableForm" style="margin-left: 10pt;"/>
-					<p:commandButton value="park Airplane" action="#{airportBean.parkAirplane(airplane.identifyer)}" update="runwayTableForm parkingSpotTableForm" style="margin-left: 10pt;"/>
+					<p:commandButton value="park Airplane" action="#{airportBean.parkAirplane(airplane.identifyer)}" update="parkingSpotTableForm" style="margin-left: 10pt;"/>
 				</p:column>
 			</p:dataTable>
 	</h:form>

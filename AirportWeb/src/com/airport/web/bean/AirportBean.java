@@ -79,14 +79,13 @@ public class AirportBean implements Serializable {
 		airplane = new Airplane();
 	}
 	
-	public void initiateLanding(String identifyer) {
+	public void initiateLanding() {
 		Iterator<Runway> runwayIterator = airportEJB.getRunways().iterator();
 		
 		while(runwayIterator.hasNext()) {
 			Runway r = runwayIterator.next();
 			if(r.getInUse() == false) {
-				airportEJB.update(r, identifyer);
-				
+				airportEJB.update(r);
 				return;
 			}
 		}
@@ -99,7 +98,7 @@ public class AirportBean implements Serializable {
 		while(runwayIterator.hasNext()) {
 			Runway r = runwayIterator.next();
 			if(r.getInUse() == true) {
-				airportEJB.update(r, "");
+				airportEJB.update(r);
 			}
 		}
 	}
