@@ -16,6 +16,16 @@ public class Airplane {
 	
 	private String identifyer;
 	private String airline;
+	
+	private AirplaneState state;
+	
+	public AirplaneState getState() {
+		return state;
+	}
+	
+	public void setState(AirplaneState state) {
+		this.state = state;
+	}
 
 	public int getId() {
 		return id;
@@ -40,4 +50,14 @@ public class Airplane {
 	public void setAirline(String airline) {
 		this.airline = airline;
 	} 
+	
+	public boolean canLand() {
+		if (state == AirplaneState.FLY) return false;
+		return true;
+	}
+	
+	public boolean canPark() {
+		if (state == AirplaneState.LAND) return false;
+		return true;
+	}
 }

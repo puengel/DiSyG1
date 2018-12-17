@@ -18,7 +18,7 @@
 			<p:inputText value="#{airportBean.airplane.identifyer}" /><p/>
 			Airline name:
 			<p:inputText value="#{airportBean.airplane.airline}" /><p/>
-			<p:commandButton value="Add airplane" action="#{airportBean.store}" update="airplaneTableForm" />
+			<p:commandButton value="Add airplane" action="#{airportBean.store()}" update="airplaneTableForm" />
 		</p:panel>
 	</h:form>
 	<p/>
@@ -26,8 +26,8 @@
 		<p:dataTable value="#{airportBean.airplanes}" var="airplane">
 			<p:column headerText="Airplanes">
 				<h:outputText value="Id: #{airplane.identifyer} || Airline: #{airplane.airline}"/>
-				<p:commandButton value="land airplane start" action="#{airportBean.initiateLanding(airplane)}" update="runwayTableForm" style="margin-left: 10pt;"/>
-				<p:commandButton value="land airplane end" action="#{airportBean.endLanding(airplane)}" update="runwayTableForm parkingSpotTableForm" style="margin-left: 10pt;"/>
+				<p:commandButton value="land airplane start" action="#{airportBean.initiateLanding(airplane)}" update="runwayTableForm airplaneTableForm @parent" disabled="#{airportBean.canLand(airplane)}" style="margin-left: 10pt;"/>
+				<p:commandButton value="land airplane end" action="#{airportBean.endLanding(airplane)}" update="runwayTableForm parkingSpotTableForm airplaneTableForm @parent" disabled="#{airportBean.canPark(airplane)}" style="margin-left: 10pt;"/>
 			</p:column>
 		</p:dataTable>
 	</h:form>

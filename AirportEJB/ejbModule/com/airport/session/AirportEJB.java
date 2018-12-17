@@ -62,6 +62,10 @@ public class AirportEJB {
 		
 		entityManager.merge(runway);
 	}
+	
+	public void update(Airplane airplane) {
+		entityManager.merge(airplane);
+	}
 
 	public void park(Parkingspot p, Airplane airplane, String timeStamp) {
 		p.setAirplaneIdentifyer(airplane.getIdentifyer());

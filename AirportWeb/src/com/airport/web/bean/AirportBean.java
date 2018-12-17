@@ -9,10 +9,18 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.*;
+
+import org.primefaces.context.RequestContext;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+//import org.primefaces.context.PrimeFacesContext;
+
 import com.airport.model.Airplane;
+import com.airport.model.AirplaneState;
 import com.airport.model.Parkingspot;
 import com.airport.model.Runway;
 import com.airport.session.AirportEJB;
@@ -35,8 +43,9 @@ public class AirportBean implements Serializable {
 	@PostConstruct
 	private void init() {
 		airplane = new Airplane();		
+		airplane.setState(AirplaneState.FLY);
 		initRunways(4);
-		initParkingspots(8);			
+		initParkingspots(8);
 	}
 	
 	public void initParkingspots(int p) {
@@ -77,7 +86,7 @@ public class AirportBean implements Serializable {
 		return airportEJB.getParkingspots().get(id);
 	}
 	
-	public void store() {
+	public boolean store() {
 //		airportEJB.store(airplane);
 //		airplane = new Airplane();
 		Iterator<Airplane> airplaneIterator = airportEJB.getAirplanes().iterator();
@@ -96,7 +105,14 @@ public class AirportBean implements Serializable {
 		if (!alreadyStored){
 			airportEJB.store(airplane);
 			airplane = new Airplane();
+			airplane.setState(AirplaneState.FLY);
+		} else {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Airplane already exists.");
+//			Reque.getCurrentInstance().showMessageInDialog(message);
+			RequestContext.getCurrentInstance().showMessageInDialog(message);
 		}
+		
+		return alreadyStored;
 	}
 	
 	public void initiateLanding(Airplane airplane) {
@@ -128,6 +144,8 @@ public class AirportBean implements Serializable {
 				Runway r = runwayIterator.next();
 				if(r.getInUse() == false) {
 					airportEJB.update(r, true, airplane.getId());
+					airplane.setState(AirplaneState.LAND);
+					airportEJB.update(airplane);
 					return;
 				}
 			}
@@ -171,10 +189,21 @@ public class AirportBean implements Serializable {
 				Parkingspot p = parkingspotIterator.next();
 				if(p.getAirplaneIdentifyer() == null ) {
 					airportEJB.park(p, airplane, timeStamp);
+					airplane.setState(AirplaneState.PARK);
+					airportEJB.update(airplane);
 					break;
 				}
 			}
 		}
 		
 	}
+	
+	public boolean canLand(Airplane airplane) {
+		return airplane.canLand();
+	}
+	
+	public boolean canPark(Airplane airplane) {
+		return airplane.canPark();
+	}
+
 }
